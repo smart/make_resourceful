@@ -40,6 +40,12 @@ module Resourceful
       # Same as edit_object_path, but with the protocol and hostname.
       def edit_object_url (object = current_object); edit_object_route(object, 'url');  end
 
+
+      #ADDED BY SMARTOCCI
+      def edit_nested_object_path(object = current_object); edit_nested_object_route(object, 'path'); end
+      # Same as edit_object_path, but with the protocol and hostname.
+      def edit_nested_object_url (object = current_object); edit_nested_object_route(object, 'url');  end
+
       # This returns the path for the collection of the current controller.
       # For example, in HatsController where Person has_many :hats and <tt>params[:person_id] == 42</tt>,
       # the following are equivalent:
@@ -114,6 +120,11 @@ module Resourceful
 
       def edit_object_route(object, type)
         instance_route(current_model_name.underscore, object, type, "edit")
+      end
+      
+      def edit_nested_object_route(object, type)
+        return edit_object_route(object, type) unless parent?
+        send("edit_#{url_helper_prefix}#{parent_class_name.underscore}_#{current_model_name.underscore}_#{type}", parent_object, object)
       end
 
       def objects_route(type)
