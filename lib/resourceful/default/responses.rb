@@ -67,7 +67,7 @@ module Resourceful
           response_for(:create) do |format|
             format.html do
               set_default_flash(:notice, "Create successful!")
-              set_default_redirect object_path
+              set_default_redirect nested_object_path
             end
             format.js
           end
@@ -83,7 +83,7 @@ module Resourceful
           response_for(:update) do |format|
             format.html do
               set_default_flash :notice, "Save successful!"
-              set_default_redirect object_path
+              set_default_redirect nested_object_path
             end
             format.js
           end
