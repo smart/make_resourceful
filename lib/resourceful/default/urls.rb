@@ -77,6 +77,17 @@ module Resourceful
       def parent_url(object = parent_object)
         instance_route(parent_class_name.underscore, object, 'url')
       end
+      
+      # This returns the path for editting the parent object.
+      # 
+      def edit_parent_path(object = parent_object)
+        instance_route(parent_class_name.underscore, object, 'path', 'edit')
+      end
+      # Same as parent_path, but with the protocol and hostname.
+      def edit_parent_url(object = parent_object)
+        instance_route(parent_class_name.underscore, object, 'url', 'edit')
+      end
+      
 
       # This prefix is added to the Rails URL helper names
       # before they're called.
