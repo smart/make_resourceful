@@ -115,7 +115,7 @@ module Resourceful
       #
       # See also url_helper_prefix.
       def collection_url_prefix
-        parent? ? "#{parent_class_name.underscore}_" : ''
+        (parent? && !subdomain_nested?) ? "#{parent_class_name.underscore}_" : ''
       end
 
       private
@@ -125,7 +125,7 @@ module Resourceful
       end
 
       def nested_object_route(object, type)
-        return object_route(object, type) unless parent?
+        return object_route(object, type) unless parent? && !subdomain_nested?
         send("#{url_helper_prefix}#{parent_class_name.underscore}_#{current_model_name.underscore}_#{type}", parent_object, object)
       end
 
@@ -134,7 +134,7 @@ module Resourceful
       end
       
       def edit_nested_object_route(object, type)
-        return edit_object_route(object, type) unless parent?
+        return edit_object_route(object, type) unless parent? && !subdomain_nested?
         send("edit_#{url_helper_prefix}#{parent_class_name.underscore}_#{current_model_name.underscore}_#{type}", parent_object, object)
       end
 
@@ -152,7 +152,7 @@ module Resourceful
 
       def collection_route(name, type, action = nil)
         send("#{action ? action + '_' : ''}#{url_helper_prefix || collection_url_prefix}#{name}_#{type}",
-             *(parent? ? [parent_object] : []))
+             *( (parent? && !subdomain_nested?) ? [parent_object] : []))
       end
     end
   end
